@@ -2,25 +2,38 @@ def solution(n, times):
     answer = 0
     m = len(times)
     
-    dp = [[times[i]] for i in range(m)]
-    print(dp)
-    #더 빨리 끝나는 심사대가 있으면 그 곳으로 갈 수 있음
-    #모든 사람이 심사를 받는데 걸리는 시간을 최소
+    #입국 심사를 기다리는 최대 사람은 1억명
+    #이분탐색을 활용하는 문제
     
-    
-    #끝날 때 시간이 최소인 곳으로 배치를 하면됌
-    
-    
-    # 7  : 7 14 21 28
-    # 10 : 10 20 
-    
-    
-    #2 :2 4 6 8 10 12 14
-    #4 :4 8 12
-    #5 :5 10
-    
-    
+    #1. times 정렬
+    #2. start,end 구간 정하기
+    #3. 이분 탐색 진행
+    #   mid 시간동안, 심사할 수 인원을 구한 뒤 n와 비교
+    #
+
     sorted(times)
-    print(times)
     
+    start = 0
+    end = times[-1] * n
+    cnt=0
+    
+    #이분 탐색
+    while start<=end:
+        mid = (start+end)//2
+        sum_arr = 0
+
+        #mid 시간동안 가능한 명수 구하기
+        for i in range(m):
+            sum_arr += mid//times[i]
+        
+        # 심사한 사람의 수가 심사 받아야할 사람의 수(n)보다 적거나 같은 경우
+        if sum_arr<n:
+            start=mid+1
+            
+        # 심사한 사람의 수가 심사 받아야할 사람의 수(n)보다 많은 경우
+        else:
+            end = mid-1       
+            answer=mid
+
+
     return answer
